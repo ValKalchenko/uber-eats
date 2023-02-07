@@ -6,8 +6,6 @@ const RestaurantContextProvider = ({ children }) => {
     const [user, setUser] = useState();
     const [restaurant, setRestaurant] = useState();
     const sub = user?.attributes?.sub;
-
-
 };
 
 export default RestaurantContextProvider;
