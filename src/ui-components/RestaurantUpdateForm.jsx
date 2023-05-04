@@ -14,7 +14,7 @@ import { DataStore } from "aws-amplify";
 export default function RestaurantUpdateForm(props) {
   const {
     id: idProp,
-    restaurant,
+    restaurant: restaurantModelProp,
     onSuccess,
     onError,
     onSubmit,
@@ -44,16 +44,17 @@ export default function RestaurantUpdateForm(props) {
     setAdminSub(cleanValues.adminSub);
     setErrors({});
   };
-  const [restaurantRecord, setRestaurantRecord] = React.useState(restaurant);
+  const [restaurantRecord, setRestaurantRecord] =
+    React.useState(restaurantModelProp);
   React.useEffect(() => {
     const queryData = async () => {
       const record = idProp
         ? await DataStore.query(Restaurant, idProp)
-        : restaurant;
+        : restaurantModelProp;
       setRestaurantRecord(record);
     };
     queryData();
-  }, [idProp, restaurant]);
+  }, [idProp, restaurantModelProp]);
   React.useEffect(resetStateValues, [restaurantRecord]);
   const validations = {
     name: [{ type: "Required" }],
@@ -66,9 +67,10 @@ export default function RestaurantUpdateForm(props) {
     currentValue,
     getDisplayValue
   ) => {
-    const value = getDisplayValue
-      ? getDisplayValue(currentValue)
-      : currentValue;
+    const value =
+      currentValue && getDisplayValue
+        ? getDisplayValue(currentValue)
+        : currentValue;
     let validationResponse = validateField(value, validations[fieldName]);
     const customValidator = fetchByPath(onValidate, fieldName);
     if (customValidator) {
@@ -255,7 +257,7 @@ export default function RestaurantUpdateForm(props) {
             event.preventDefault();
             resetStateValues();
           }}
-          isDisabled={!(idProp || restaurant)}
+          isDisabled={!(idProp || restaurantModelProp)}
           {...getOverrideProps(overrides, "ResetButton")}
         ></Button>
         <Flex
@@ -267,7 +269,7 @@ export default function RestaurantUpdateForm(props) {
             type="submit"
             variation="primary"
             isDisabled={
-              !(idProp || restaurant) ||
+              !(idProp || restaurantModelProp) ||
               Object.values(errors).some((e) => e?.hasError)
             }
             {...getOverrideProps(overrides, "SubmitButton")}

@@ -9,13 +9,13 @@ const OrderStatus = {
   "DECLINED": "DECLINED"
 };
 
-const { OrderDish, Dish, Order, Restaurant, User } = initSchema(schema);
+const { OrderDish, Order, User, Dish, Restaurant } = initSchema(schema);
 
 export {
   OrderDish,
-  Dish,
   Order,
-  Restaurant,
   User,
+  Dish,
+  Restaurant,
   OrderStatus
 };
